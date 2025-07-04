@@ -1,4 +1,4 @@
-use mac_setup_cli::{is_homebrew_installed, install_homebrew};
+use mac_setup_cli::is_homebrew_installed;
 use std::process::Command;
 
 #[test]

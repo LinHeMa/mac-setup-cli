@@ -26,18 +26,16 @@ fn main() {
             0 => {
                 if !is_homebrew_installed() {
                     println!("Please install Homebrew first.");
+                } else if is_git_installed() {
+                    println!("Git is installed.");
                 } else {
-                    if is_git_installed() {
-                        println!("Git is installed.");
-                    } else {
-                        println!("Git is not installed.");
-                        if Confirm::with_theme(&ColorfulTheme::default())
-                            .with_prompt("Do you want to install Git using Homebrew?")
-                            .interact()
-                            .unwrap_or(false)
-                        {
-                            install_git_with_homebrew();
-                        }
+                    println!("Git is not installed.");
+                    if Confirm::with_theme(&ColorfulTheme::default())
+                        .with_prompt("Do you want to install Git using Homebrew?")
+                        .interact()
+                        .unwrap_or(false)
+                    {
+                        install_git_with_homebrew();
                     }
                 }
                 println!("\n(Returning to menu in 2 seconds)");
@@ -78,18 +76,16 @@ fn main() {
             3 => {
                 if !is_homebrew_installed() {
                     println!("Please install Homebrew first.");
+                } else if is_vscode_installed() {
+                    println!("Visual Studio Code is installed.");
                 } else {
-                    if is_vscode_installed() {
-                        println!("Visual Studio Code is installed.");
-                    } else {
-                        println!("Visual Studio Code is not installed.");
-                        if Confirm::with_theme(&ColorfulTheme::default())
-                            .with_prompt("Do you want to install Visual Studio Code using Homebrew?")
-                            .interact()
-                            .unwrap_or(false)
-                        {
-                            install_vscode();
-                        }
+                    println!("Visual Studio Code is not installed.");
+                    if Confirm::with_theme(&ColorfulTheme::default())
+                        .with_prompt("Do you want to install Visual Studio Code using Homebrew?")
+                        .interact()
+                        .unwrap_or(false)
+                    {
+                        install_vscode();
                     }
                 }
                 println!("\n(Returning to menu in 2 seconds)");
@@ -98,18 +94,16 @@ fn main() {
             4 => {
                 if !is_homebrew_installed() {
                     println!("Please install Homebrew first.");
+                } else if is_chrome_installed() {
+                    println!("Google Chrome is installed.");
                 } else {
-                    if is_chrome_installed() {
-                        println!("Google Chrome is installed.");
-                    } else {
-                        println!("Google Chrome is not installed.");
-                        if Confirm::with_theme(&ColorfulTheme::default())
-                            .with_prompt("Do you want to install Google Chrome using Homebrew?")
-                            .interact()
-                            .unwrap_or(false)
-                        {
-                            install_chrome();
-                        }
+                    println!("Google Chrome is not installed.");
+                    if Confirm::with_theme(&ColorfulTheme::default())
+                        .with_prompt("Do you want to install Google Chrome using Homebrew?")
+                        .interact()
+                        .unwrap_or(false)
+                    {
+                        install_chrome();
                     }
                 }
                 println!("\n(Returning to menu in 2 seconds)");
@@ -118,18 +112,16 @@ fn main() {
             5 => {
                 if !is_homebrew_installed() {
                     println!("Please install Homebrew first.");
+                } else if is_docker_installed() {
+                    println!("Docker is installed.");
                 } else {
-                    if is_docker_installed() {
-                        println!("Docker is installed.");
-                    } else {
-                        println!("Docker is not installed.");
-                        if Confirm::with_theme(&ColorfulTheme::default())
-                            .with_prompt("Do you want to install Docker using Homebrew?")
-                            .interact()
-                            .unwrap_or(false)
-                        {
-                            install_docker();
-                        }
+                    println!("Docker is not installed.");
+                    if Confirm::with_theme(&ColorfulTheme::default())
+                        .with_prompt("Do you want to install Docker using Homebrew?")
+                        .interact()
+                        .unwrap_or(false)
+                    {
+                        install_docker();
                     }
                 }
                 println!("\n(Returning to menu in 2 seconds)");
@@ -138,18 +130,16 @@ fn main() {
             6 => {
                 if !is_homebrew_installed() {
                     println!("Please install Homebrew first.");
+                } else if is_slack_installed() {
+                    println!("Slack is installed.");
                 } else {
-                    if is_slack_installed() {
-                        println!("Slack is installed.");
-                    } else {
-                        println!("Slack is not installed.");
-                        if Confirm::with_theme(&ColorfulTheme::default())
-                            .with_prompt("Do you want to install Slack using Homebrew?")
-                            .interact()
-                            .unwrap_or(false)
-                        {
-                            install_slack();
-                        }
+                    println!("Slack is not installed.");
+                    if Confirm::with_theme(&ColorfulTheme::default())
+                        .with_prompt("Do you want to install Slack using Homebrew?")
+                        .interact()
+                        .unwrap_or(false)
+                    {
+                        install_slack();
                     }
                 }
                 println!("\n(Returning to menu in 2 seconds)");
@@ -158,18 +148,16 @@ fn main() {
             7 => {
                 if !is_homebrew_installed() {
                     println!("Please install Homebrew first.");
+                } else if is_raycast_installed() {
+                    println!("Raycast is installed.");
                 } else {
-                    if is_raycast_installed() {
-                        println!("Raycast is installed.");
-                    } else {
-                        println!("Raycast is not installed.");
-                        if Confirm::with_theme(&ColorfulTheme::default())
-                            .with_prompt("Do you want to install Raycast using Homebrew?")
-                            .interact()
-                            .unwrap_or(false)
-                        {
-                            install_raycast();
-                        }
+                    println!("Raycast is not installed.");
+                    if Confirm::with_theme(&ColorfulTheme::default())
+                        .with_prompt("Do you want to install Raycast using Homebrew?")
+                        .interact()
+                        .unwrap_or(false)
+                    {
+                        install_raycast();
                     }
                 }
                 println!("\n(Returning to menu in 2 seconds)");
