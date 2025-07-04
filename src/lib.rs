@@ -24,7 +24,7 @@ pub fn install_git_with_homebrew() {
             }
         }
         Err(e) => {
-            eprintln!("Failed to execute command: {}", e);
+            eprintln!("Failed to execute command: {e}");
         }
     }
 }
@@ -52,7 +52,7 @@ pub fn install_homebrew() {
             }
         }
         Err(e) => {
-            eprintln!("Failed to execute command: {}", e);
+            eprintln!("Failed to execute command: {e}");
         }
     }
 }
@@ -90,7 +90,7 @@ pub fn install_nvm() {
                         }
                     }
                     Err(e) => {
-                        eprintln!("Failed to execute nvm command: {}", e);
+                        eprintln!("Failed to execute nvm command: {e}");
                     }
                 }
             } else {
@@ -98,7 +98,7 @@ pub fn install_nvm() {
             }
         }
         Err(e) => {
-            eprintln!("Failed to execute command: {}", e);
+            eprintln!("Failed to execute command: {e}");
         }
     }
 }
@@ -128,7 +128,7 @@ pub fn install_vscode() {
             }
         }
         Err(e) => {
-            eprintln!("Failed to execute command: {}", e);
+            eprintln!("Failed to execute command: {e}");
         }
     }
 }
@@ -162,7 +162,7 @@ pub fn install_chrome() {
             }
         }
         Err(e) => {
-            eprintln!("Failed to execute command: {}", e);
+            eprintln!("Failed to execute command: {e}");
         }
     }
 }
@@ -200,7 +200,7 @@ pub fn install_docker() {
             }
         }
         Err(e) => {
-            eprintln!("Failed to execute command: {}", e);
+            eprintln!("Failed to execute command: {e}");
         }
     }
 }
@@ -235,7 +235,7 @@ pub fn install_slack() {
             }
         }
         Err(e) => {
-            eprintln!("Failed to execute command: {}", e);
+            eprintln!("Failed to execute command: {e}");
         }
     }
 }
@@ -270,7 +270,7 @@ pub fn install_raycast() {
             }
         }
         Err(e) => {
-            eprintln!("Failed to execute command: {}", e);
+            eprintln!("Failed to execute command: {e}");
         }
     }
 }
