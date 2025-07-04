@@ -1,9 +1,9 @@
-use std::process::Command;
-use dialoguer::{theme::ColorfulTheme, Select};
+use dialoguer::{theme::ColorfulTheme, Select, Confirm};
+use my_rust_cli::{is_git_installed, install_git_with_homebrew, is_homebrew_installed, install_homebrew};
 
 fn main() {
     loop {
-        let selections = &["Check for git", "Exit"];
+        let selections = &["Check for git", "Check for Homebrew", "Exit"];
 
         let selection = match Select::with_theme(&ColorfulTheme::default())
             .with_prompt("Select an option")
@@ -28,11 +28,34 @@ fn main() {
                     println!("Git is installed.");
                 } else {
                     println!("Git is not installed.");
+                    if Confirm::with_theme(&ColorfulTheme::default())
+                        .with_prompt("Do you want to install Git using Homebrew?")
+                        .interact()
+                        .unwrap_or(false)
+                    {
+                        install_git_with_homebrew();
+                    }
                 }
                 println!("\n(Returning to menu in 2 seconds)");
                 std::thread::sleep(std::time::Duration::from_secs(2));
             }
             1 => {
+                if is_homebrew_installed() {
+                    println!("Homebrew is installed.");
+                } else {
+                    println!("Homebrew is not installed.");
+                    if Confirm::with_theme(&ColorfulTheme::default())
+                        .with_prompt("Do you want to install Homebrew?")
+                        .interact()
+                        .unwrap_or(false)
+                    {
+                        install_homebrew();
+                    }
+                }
+                println!("\n(Returning to menu in 2 seconds)");
+                std::thread::sleep(std::time::Duration::from_secs(2));
+            }
+            2 => {
                 println!("Bye!");
                 break;
             }
@@ -41,10 +64,5 @@ fn main() {
     }
 }
 
-fn is_git_installed() -> bool {
-    Command::new("git")
-        .arg("--version")
-        .output()
-        .is_ok()
-}
+
 
