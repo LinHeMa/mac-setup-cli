@@ -1,0 +1,81 @@
+# .github/workflows/release.yml
+
+# 工作流程的名稱
+name: Build and Release
+
+# 觸發此工作流程的事件
+on:
+  # 1. 當有程式碼推送到 main 分支或 v*.*.* 格式的標籤時
+  push:
+    branches:
+      - main
+    tags:
+      - "v*.*.*"
+  # 2. 當有 Pull Request 指向 main 分支時
+  pull_request:
+    branches:
+      - main
+
+# 工作流程執行的任務 (Jobs)
+jobs:
+  # 我們定義一個名為 build-and-release 的任務
+  build-and-release:
+    # 指定此任務運行的作業系統，因為是 macOS 工具，所以必須是 macos
+    runs-on: macos-latest
+
+    # 此任務中的步驟
+    steps:
+      # 步驟 1: 取得原始碼
+      # 使用官方的 checkout action 來將儲存庫的程式碼下載到 runner 中
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 步驟 2: 安裝 Rust 工具鏈
+      # 使用社群推薦的 action 來安裝穩定版的 Rust
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      # 步驟 3: 設定快取 (Cache)
+      # 快取 cargo 的依賴項，可以大幅加速編譯過程
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+
+      # 步驟 4: 執行程式碼風格檢查 (Linter)
+      # -- -D warnings 會將所有警告視為錯誤，強制維持高程式碼品質
+      - name: Run linter (Clippy)
+        run: cargo clippy -- -D warnings
+
+      # 步驟 5: 執行測試
+      - name: Run tests
+        run: cargo test --verbose
+
+      # 步驟 6: 編譯 Release 版本的執行檔
+      - name: Build release binary
+        run: cargo build --release --verbose
+
+      # 步驟 7: 打包執行檔 (僅在推送標籤時執行)
+      # 'if' 條件句確保這一步和下一步只在觸發事件是標籤時才會運行
+      - name: Package release assets
+        if: startsWith(github.ref, 'refs/tags/')
+        run: zip -j mac-setup-cli.zip target/release/mac-setup-cli
+
+      # 步驟 8: 建立 GitHub Release (僅在推送標籤時執行)
+      # 使用社群廣受好評的 action 來自動建立 Release
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          # 將打包好的 zip 檔案上傳
+          files: mac-setup-cli.zip
+          # GITHUB_TOKEN 是由 GitHub Actions 自動提供的，不需要手動設定
+          # 它有權限可以代表您在儲存庫中建立 Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
