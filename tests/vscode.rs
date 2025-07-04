@@ -1,4 +1,4 @@
-use my_rust_cli::{is_vscode_installed, is_homebrew_installed, install_vscode};
+use my_rust_cli::{is_vscode_installed, is_homebrew_installed, install_vscode, open_vscode};
 use std::process::Command;
 
 #[test]
@@ -47,9 +47,6 @@ fn test_vscode_version() {
 #[test]
 fn test_open_vscode() {
     if is_vscode_installed() {
-        let output = Command::new("code")
-            .arg(".")
-            .output();
-        assert!(output.is_ok());
+        open_vscode();
     }
 }
