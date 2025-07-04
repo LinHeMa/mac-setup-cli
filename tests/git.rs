@@ -2,6 +2,13 @@ use my_rust_cli::{is_git_installed, is_homebrew_installed};
 use std::process::Command;
 
 #[test]
+fn test_is_homebrew_installed_for_git() {
+    // This test is dependent on the environment.
+    // If Homebrew is installed, this should pass.
+    assert!(is_homebrew_installed());
+}
+
+#[test]
 fn test_is_git_installed() {
     // This test is dependent on the environment.
     // If git is installed, this should pass.

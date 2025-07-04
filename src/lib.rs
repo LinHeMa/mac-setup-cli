@@ -55,3 +55,32 @@ pub fn install_homebrew() {
         }
     }
 }
+
+pub fn is_nvm_installed() -> bool {
+    Command::new("/bin/bash")
+        .arg("-c")
+        .arg("source $HOME/.nvm/nvm.sh && nvm --version")
+        .output()
+        .is_ok()
+}
+
+pub fn install_nvm() {
+    println!("Installing nvm...");
+    let output = Command::new("/bin/bash")
+        .arg("-c")
+        .arg("curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash")
+        .output();
+
+    match output {
+        Ok(output) => {
+            if output.status.success() {
+                println!("nvm installed successfully.");
+            } else {
+                eprintln!("Failed to install nvm: {}", String::from_utf8_lossy(&output.stderr));
+            }
+        }
+        Err(e) => {
+            eprintln!("Failed to execute command: {}", e);
+        }
+    }
+}
