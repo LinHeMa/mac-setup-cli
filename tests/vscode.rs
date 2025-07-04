@@ -1,4 +1,4 @@
-use my_rust_cli::{is_vscode_installed, is_homebrew_installed, install_vscode, open_vscode};
+use mac_setup_cli::{is_vscode_installed, is_homebrew_installed, install_vscode, open_vscode};
 use std::process::Command;
 
 #[test]

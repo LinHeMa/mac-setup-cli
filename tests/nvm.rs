@@ -1,4 +1,4 @@
-use my_rust_cli::{is_nvm_installed, install_nvm};
+use mac_setup_cli::{is_nvm_installed, install_nvm};
 use std::process::Command;
 
 #[test]

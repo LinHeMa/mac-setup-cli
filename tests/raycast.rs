@@ -1,4 +1,4 @@
-use my_rust_cli::{install_raycast, is_homebrew_installed, is_raycast_installed, open_raycast};
+use mac_setup_cli::{install_raycast, is_homebrew_installed, is_raycast_installed, open_raycast};
 use std::process::Command;
 
 #[test]

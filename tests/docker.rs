@@ -1,4 +1,4 @@
-use my_rust_cli::{is_docker_installed, is_homebrew_installed, install_docker, open_docker};
+use mac_setup_cli::{is_docker_installed, is_homebrew_installed, install_docker, open_docker};
 use std::process::Command;
 
 #[test]

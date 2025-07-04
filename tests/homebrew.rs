@@ -1,4 +1,4 @@
-use my_rust_cli::{is_homebrew_installed, install_homebrew};
+use mac_setup_cli::{is_homebrew_installed, install_homebrew};
 use std::process::Command;
 
 #[test]

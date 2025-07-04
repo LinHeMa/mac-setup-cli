@@ -1,5 +1,5 @@
 use dialoguer::{theme::ColorfulTheme, Select, Confirm};
-use my_rust_cli::{is_git_installed, install_git_with_homebrew, is_homebrew_installed, install_homebrew, is_nvm_installed, install_nvm, is_vscode_installed, install_vscode, is_chrome_installed, install_chrome, is_docker_installed, install_docker, is_slack_installed, install_slack, is_raycast_installed, install_raycast};
+use mac_setup_cli::{is_git_installed, install_git_with_homebrew, is_homebrew_installed, install_homebrew, is_nvm_installed, install_nvm, is_vscode_installed, install_vscode, is_chrome_installed, install_chrome, is_docker_installed, install_docker, is_slack_installed, install_slack, is_raycast_installed, install_raycast};
 
 fn main() {
     loop {
