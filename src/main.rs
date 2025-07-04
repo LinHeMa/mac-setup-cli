@@ -1,9 +1,9 @@
 use dialoguer::{theme::ColorfulTheme, Select, Confirm};
-use my_rust_cli::{is_git_installed, install_git_with_homebrew, is_homebrew_installed, install_homebrew, is_nvm_installed, install_nvm};
+use my_rust_cli::{is_git_installed, install_git_with_homebrew, is_homebrew_installed, install_homebrew, is_nvm_installed, install_nvm, is_vscode_installed, install_vscode};
 
 fn main() {
     loop {
-        let selections = &["Check for git", "Check for Homebrew", "Check for nvm", "Exit"];
+        let selections = &["Check for git", "Check for Homebrew", "Check for nvm", "Check for VS Code", "Exit"];
 
         let selection = match Select::with_theme(&ColorfulTheme::default())
             .with_prompt("Select an option")
@@ -76,6 +76,27 @@ fn main() {
                 std::thread::sleep(std::time::Duration::from_secs(2));
             }
             3 => {
+                if !is_homebrew_installed() {
+                    println!("Please install Homebrew first.");
+                } else {
+                    if is_vscode_installed() {
+                        println!("Visual Studio Code is installed.");
+                    }
+                    else {
+                        println!("Visual Studio Code is not installed.");
+                        if Confirm::with_theme(&ColorfulTheme::default())
+                            .with_prompt("Do you want to install Visual Studio Code using Homebrew?")
+                            .interact()
+                            .unwrap_or(false)
+                        {
+                            install_vscode();
+                        }
+                    }
+                }
+                println!("\n(Returning to menu in 2 seconds)");
+                std::thread::sleep(std::time::Duration::from_secs(2));
+            }
+            4 => {
                 println!("Bye!");
                 break;
             }

@@ -1,4 +1,4 @@
-use my_rust_cli::is_nvm_installed;
+use my_rust_cli::{is_nvm_installed, install_nvm};
 use std::process::Command;
 
 #[test]
@@ -9,18 +9,12 @@ fn test_is_nvm_installed() {
 }
 
 #[test]
-fn test_install_nvm() {
+fn test_install_nvm_and_lts_node() {
     // This is a tricky test to write without actually installing nvm.
     // We will simulate the installation by checking if the command can be executed.
     if !is_nvm_installed() {
-        // We can't truly test the installation without running the actual command,
-        // which is not ideal for a unit test.
-        // We will just check that the command can be constructed.
-        let cmd = Command::new("/bin/bash")
-            .arg("-c")
-            .arg("curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash")
-            .output();
-        assert!(cmd.is_ok());
+        install_nvm();
+        assert!(is_node_lts());
     } else {
         println!("Skipping nvm installation test because nvm is already installed.");
     }
@@ -39,3 +33,21 @@ fn test_nvm_version() {
         assert!(!version.is_empty());
     }
 }
+
+#[test]
+fn test_is_node_lts() {
+    if is_nvm_installed() {
+        assert!(is_node_lts());
+    }
+}
+
+fn is_node_lts() -> bool {
+    let output = Command::new("/bin/bash")
+        .arg("-c")
+        .arg("source $HOME/.nvm/nvm.sh && nvm ls --no-colors")
+        .output()
+        .expect("Failed to execute command");
+    let output_str = String::from_utf8_lossy(&output.stdout);
+    output_str.contains("lts")
+}
+
