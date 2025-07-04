@@ -1,3 +1,6 @@
+## Installation
+[v1.0.0](https://github.com/LinHeMa/mac-setup-cli/releases/tag/v1.0.0)
+
 ## Architecture
 ```
 my-rust-cli
