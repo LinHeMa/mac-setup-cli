@@ -1,42 +1,42 @@
 # .github/workflows/release.yml
 
-# 工作流程的名稱
+# Name of the workflow
 name: Build and Release
 
-# 觸發此工作流程的事件
+# Events that trigger this workflow
 on:
-  # 1. 當有程式碼推送到 main 分支或 v*.*.* 格式的標籤時
+  # 1. When code is pushed to the main branch or tags matching v*.*.*
   push:
     branches:
       - main
     tags:
       - "v*.*.*"
-  # 2. 當有 Pull Request 指向 main 分支時
+  # 2. When a Pull Request targets the main branch
   pull_request:
     branches:
       - main
 
-# 工作流程執行的任務 (Jobs)
+# Jobs executed by the workflow
 jobs:
-  # 我們定義一個名為 build-and-release 的任務
+  # Define a job named build-and-release
   build-and-release:
-    # 指定此任務運行的作業系統，因為是 macOS 工具，所以必須是 macos
+    # Specify the OS for this job; must be macos for macOS tools
     runs-on: macos-latest
 
-    # 此任務中的步驟
+    # Steps in this job
     steps:
-      # 步驟 1: 取得原始碼
-      # 使用官方的 checkout action 來將儲存庫的程式碼下載到 runner 中
+      # Step 1: Checkout source code
+      # Use the official checkout action to download repository code to the runner
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 步驟 2: 安裝 Rust 工具鏈
-      # 使用社群推薦的 action 來安裝穩定版的 Rust
+      # Step 2: Install Rust toolchain
+      # Use a community-recommended action to install stable Rust
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@stable
 
-      # 步驟 3: 設定快取 (Cache)
-      # 快取 cargo 的依賴項，可以大幅加速編譯過程
+      # Step 3: Set up cache
+      # Cache cargo dependencies to speed up build process
       - name: Cache dependencies
         uses: actions/cache@v4
         with:
@@ -48,50 +48,50 @@ jobs:
             target/
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
 
-      # 步驟 4: 安裝並啟動 Docker (為了測試)
+      # Step 4: Install and start Docker (for testing)
       - name: Install and start Docker
         run: |
-          # 使用 Homebrew Cask 安裝 Docker Desktop
+          # Install Docker Desktop using Homebrew Cask
           brew install --cask docker
-          
-          # 啟動 Docker 應用程式。'--background' 和 '--hide' 確保它在背景運行
+
+          # Start Docker app. '--background' and '--hide' ensure it runs in the background
           open --background -a Docker
-          
-          # 等待 Docker 服務完全就緒
+
+          # Wait for Docker service to be fully ready
           echo "Waiting for Docker daemon to start..."
           while ! docker system info > /dev/null 2>&1; do
             sleep 2
           done
           echo "Docker daemon is ready!"
 
-      # 步驟 5: 執行程式碼風格檢查 (Linter)
-      # -- -D warnings 會將所有警告視為錯誤，強制維持高程式碼品質
+      # Step 5: Run code style check (Linter)
+      # -- -D warnings treats all warnings as errors to enforce high code quality
       - name: Run linter (Clippy)
         run: cargo clippy -- -D warnings
 
-      # 步驟 6: 執行測試
+      # Step 6: Run tests
       - name: Run tests
         run: cargo test --verbose
 
-      # 步驟 7: 編譯 Release 版本的執行檔
+      # Step 7: Build release binary
       - name: Build release binary
         run: cargo build --release --verbose
 
-      # 步驟 8: 打包執行檔 (僅在推送標籤時執行)
-      # 'if' 條件句確保這一步和下一步只在觸發事件是標籤時才會運行
+      # Step 8: Package release assets (only on tag push)
+      # 'if' ensures this and the next step only run on tag events
       - name: Package release assets
         if: startsWith(github.ref, 'refs/tags/')
         run: zip -j mac-setup-cli.zip target/release/mac-setup-cli
 
-      # 步驟 9: 建立 GitHub Release (僅在推送標籤時執行)
-      # 使用社群廣受好評的 action 來自動建立 Release
+      # Step 9: Create GitHub Release (only on tag push)
+      # Use a popular community action to automatically create a Release
       - name: Create GitHub Release
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
-          # 將打包好的 zip 檔案上傳
+          # Upload the packaged zip file
           files: mac-setup-cli.zip
-          # GITHUB_TOKEN 是由 GitHub Actions 自動提供的，不需要手動設定
-          # 它有權限可以代表��在儲存庫中建立 Release
+          # GITHUB_TOKEN is automatically provided by GitHub Actions
+          # It has permission to create Releases in the repository
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
