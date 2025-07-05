@@ -30,6 +30,12 @@ my-rust-cli
 8. raycast，檢查系統是否有安裝homebrew，如果沒有顯示訊息「需要先安裝homebrew」並且回到主選單，如果有，檢查系統是否有安裝raycast，如果有，回到主選單。如果沒有，幫使用者安裝。安裝完打開raycast app(安裝指令：`brew install --cask raycast`)
 
 ## Tests
+local
+```
+cargo test --all-features 
+```
+在CICD不執行docker 測試
+
 1. homebrew
    1. 可以正確辨識是否有安裝
    2. 可以正確顯示版本

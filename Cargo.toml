@@ -6,3 +6,8 @@ edition = "2024"
 [dependencies]
 dialoguer = "0.11.0"
 console = "0.15.8"
+
+[features]
+# This feature flag enables tests that require a running Docker daemon.
+# These tests are skipped by default in CI.
+docker-tests = []
