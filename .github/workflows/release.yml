@@ -23,6 +23,10 @@ jobs:
     # Specify the OS for this job; must be macos for macOS tools
     runs-on: macos-latest
 
+    # Grant write permissions to the GITHUB_TOKEN for creating a release
+    permissions:
+      contents: write
+
     # Steps in this job
     steps:
       # Step 1: Checkout source code
@@ -59,10 +63,10 @@ jobs:
           curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
           export NVM_DIR="$HOME/.nvm"
           [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-          
+
           # 為測試準備環境：安裝一個 LTS 版本的 Node.js
           nvm install --lts
-          
+
           # 現在，環境已準備就緒，我們可以執行測試了
           cargo test --verbose
 
