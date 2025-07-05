@@ -66,35 +66,26 @@ pub fn is_nvm_installed() -> bool {
 }
 
 pub fn install_nvm() {
-    println!("Installing nvm...");
+    println!("Installing nvm and latest LTS Node.js...");
+    let install_script = r#"
+        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+        export NVM_DIR="$HOME/.nvm"
+        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+        nvm install --lts
+    "#;
+
     let output = Command::new("/bin/bash")
         .arg("-c")
-        .arg("curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash")
+        .arg(install_script)
         .output();
 
     match output {
         Ok(output) => {
             if output.status.success() {
-                println!("nvm installed successfully.");
-                println!("Installing latest LTS Node.js...");
-                let lts_output = Command::new("/bin/bash")
-                    .arg("-c")
-                    .arg("source $HOME/.nvm/nvm.sh && nvm install --lts")
-                    .output();
-                match lts_output {
-                    Ok(lts_output) => {
-                        if lts_output.status.success() {
-                            println!("Latest LTS Node.js installed successfully.");
-                        } else {
-                            eprintln!("Failed to install LTS Node.js: {}", String::from_utf8_lossy(&lts_output.stderr));
-                        }
-                    }
-                    Err(e) => {
-                        eprintln!("Failed to execute nvm command: {e}");
-                    }
-                }
+                println!("nvm and Node.js LTS installed successfully.");
+                println!("{}", String::from_utf8_lossy(&output.stdout));
             } else {
-                eprintln!("Failed to install nvm: {}", String::from_utf8_lossy(&output.stderr));
+                eprintln!("Failed to install nvm/Node.js: {}", String::from_utf8_lossy(&output.stderr));
             }
         }
         Err(e) => {

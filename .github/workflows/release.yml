@@ -54,7 +54,16 @@ jobs:
 
       # 步驟 5: 執行測試 (預設跳過 Docker 測試)
       - name: Run tests (exclude docker tests)
-        run: cargo test --verbose
+        run: |
+          # NVM 的安裝腳本會被我們的 CLI 呼叫，但它只會影響當前的 shell。
+          # 為了讓測試能夠找到 nvm，我們需要手動 source 它。
+          # 我們也需要先安裝 nvm，因為我們的測試依賴它。
+          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+          export NVM_DIR="$HOME/.nvm"
+          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+          
+          # 現在我們可以執行測試了
+          cargo test --verbose
 
       # 步驟 6: 編譯 Release 版本的執行檔
       - name: Build release binary

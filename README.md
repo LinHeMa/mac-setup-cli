@@ -22,7 +22,12 @@ my-rust-cli
 ## Features
 1. homebrew，檢查系統是否有安裝homebrew，如果有，回到主選單。如果沒有，幫使用者安裝。(安裝指令：`/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`)
 2. git，檢查系統是否有安裝homebrew，如果沒有顯示訊息「需要先安裝homebrew」並且回到主選單，如果有，檢查系統是否有安裝git，如果有，回到主選單。如果沒有，幫使用者安裝。(安裝指令：`brew install git`)
-3. nvm，檢查系統是否有安裝nvm，如果有，回到主選單。如果沒有，幫使用者安裝。(安裝指令：`curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash`)，安裝完之後幫使用者下載最新的lts nodejs。
+3. nvm，檢查系統是否有安裝nvm，如果有，回到主選單。如果沒有，幫使用者安裝。(安裝指令：`curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash`)，安裝完之後幫使用者下載最新的lts nodejs。幫使用者加入
+```
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+nvm install --lts
+```
 4. vscode，檢查系統是否有安裝homebrew，如果沒有顯示訊息「需要先安裝homebrew」並且回到主選單，如果有，檢查系統是否有安裝vscode，如果有，回到主選單。如果沒有，幫使用者安裝。安裝完打開vscode app(安裝指令：`brew install --cask visual-studio-code`)
 5. google chrome，檢查系統是否有安裝homebrew，如果沒有顯示訊息「需要先安裝homebrew」並且回到主選單，如果有，檢查系統是否有安裝chrome，如果有，回到主選單。如果沒有，幫使用者安裝。安裝完打開google chrome app(安裝指令：`brew install --cask google-chrome`)
 6. docker，檢查系統是否有安裝homebrew，如果沒有顯示訊息「需要先安裝homebrew」並且回到主選單，如果有，檢查系統是否有安裝docker，如果有，回到主選單。如果沒有，幫使用者安裝。安裝完打開docker app(安裝指令：`brew install --cask docker`)
