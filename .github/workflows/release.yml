@@ -48,50 +48,48 @@ jobs:
             target/
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
 
-      # Step 4: Install and start Docker (for testing)
-      - name: Install and start Docker
+      # 步驟 4: 安裝並啟動 Docker 環境 (使用 Colima)
+      - name: Install and start Colima for Docker environment
         run: |
-          # Install Docker Desktop using Homebrew Cask
-          brew install --cask docker
+          # 安裝 Colima 和 Docker CLI
+          brew install colima docker
+          
+          # 啟動 Colima。這會自動下載並設定一個輕量級的虛擬機來運行 Docker
+          # arch: aarch64 指定使用 ARM 架構，與 macOS runner 匹配
+          colima start --arch aarch64 --memory 4
+          
+          # 檢查 Docker 上下文和版本以確認設定成功
+          docker context ls
+          docker version
 
-          # Start Docker app. '--background' and '--hide' ensure it runs in the background
-          open --background -a Docker
-
-          # Wait for Docker service to be fully ready
-          echo "Waiting for Docker daemon to start..."
-          while ! docker system info > /dev/null 2>&1; do
-            sleep 2
-          done
-          echo "Docker daemon is ready!"
-
-      # Step 5: Run code style check (Linter)
-      # -- -D warnings treats all warnings as errors to enforce high code quality
+      # 步驟 5: 執行程式碼風格檢查 (Linter)
+      # -- -D warnings 會將所有警告視為錯誤，強制維持高程式碼品質
       - name: Run linter (Clippy)
         run: cargo clippy -- -D warnings
 
-      # Step 6: Run tests
+      # 步驟 6: 執行測試
       - name: Run tests
         run: cargo test --verbose
 
-      # Step 7: Build release binary
+      # 步驟 7: 編譯 Release 版本的執行檔
       - name: Build release binary
         run: cargo build --release --verbose
 
-      # Step 8: Package release assets (only on tag push)
-      # 'if' ensures this and the next step only run on tag events
+      # 步驟 8: 打包執行檔 (僅在推送標籤時執行)
+      # 'if' 條件句確保這一步和下一步只在觸發事��是標籤時才會運行
       - name: Package release assets
         if: startsWith(github.ref, 'refs/tags/')
         run: zip -j mac-setup-cli.zip target/release/mac-setup-cli
 
-      # Step 9: Create GitHub Release (only on tag push)
-      # Use a popular community action to automatically create a Release
+      # 步驟 9: 建立 GitHub Release (僅在推送標籤時執行)
+      # 使用社群廣受好評的 action 來自動建立 Release
       - name: Create GitHub Release
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
-          # Upload the packaged zip file
+          # 將打包好的 zip 檔案上傳
           files: mac-setup-cli.zip
-          # GITHUB_TOKEN is automatically provided by GitHub Actions
-          # It has permission to create Releases in the repository
+          # GITHUB_TOKEN 是由 GitHub Actions 自動提供的，不需要手動設定
+          # 它有權限可以代表您在儲存庫中建立 Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
