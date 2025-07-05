@@ -47,21 +47,6 @@ jobs:
             ~/.cargo/git/db/
             target/
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-
-      # 步驟 4: 安裝並啟動 Docker 環境 (使用 Colima)
-      - name: Install and start Colima for Docker environment
-        run: |
-          # 安裝 Colima 和 Docker CLI
-          brew install colima docker
-          
-          # 啟動 Colima。這會自動下載並設定一個輕量級的虛擬機來運行 Docker
-          # arch: aarch64 指定使用 ARM 架構，與 macOS runner 匹配
-          colima start --arch aarch64 --memory 4
-          
-          # 檢查 Docker 上下文和版本以確認設定成功
-          docker context ls
-          docker version
-
       # 步驟 5: 執行程式碼風格檢查 (Linter)
       # -- -D warnings 會將所有警告視為錯誤，強制維持高程式碼品質
       - name: Run linter (Clippy)
