@@ -11,3 +11,6 @@ console = "0.15.8"
 # This feature flag enables tests that require a running Docker daemon.
 # These tests are skipped by default in CI.
 docker-tests = []
+# This feature flag enables tests that require GUI applications to be installed.
+# These tests are also skipped by default in CI.
+gui-tests = []

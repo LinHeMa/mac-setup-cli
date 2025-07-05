@@ -1,3 +1,5 @@
+#![cfg(feature = "gui-tests")]
+
 use mac_setup_cli::{is_slack_installed, is_homebrew_installed, install_slack, open_slack};
 use std::process::Command;
 

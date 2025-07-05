@@ -1,3 +1,5 @@
+#![cfg(feature = "gui-tests")]
+
 use mac_setup_cli::{is_chrome_installed, is_homebrew_installed, install_chrome, open_chrome};
 use std::process::Command;
 

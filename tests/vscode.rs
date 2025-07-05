@@ -1,3 +1,5 @@
+#![cfg(feature = "gui-tests")]
+
 use mac_setup_cli::{is_vscode_installed, is_homebrew_installed, install_vscode, open_vscode};
 use std::process::Command;
 
