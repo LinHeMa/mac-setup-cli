@@ -48,44 +48,42 @@ jobs:
             target/
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
 
-      # 步驟 4: 設定 Docker (為了測試)
-      - name: Set up Docker Buildx
-        id: buildx
-        uses: docker/setup-buildx-action@v3
-
-      # 步驟 5: 啟動 Docker 並等待其就緒
-      - name: Start Docker and wait for it to be ready
+      # 步驟 4: 安裝並啟動 Docker (為了測試)
+      - name: Install and start Docker
         run: |
-          # 啟動 Docker Desktop 應用程式
-          open /Applications/Docker.app
+          # 使用 Homebrew Cask 安裝 Docker Desktop
+          brew install --cask docker
           
-          # 等待 Docker 服務啟動。我們透過重複執行 `docker version` 直到成功為止。
-          echo "Waiting for Docker to start..."
-          while ! docker version > /dev/null 2>&1; do
-            sleep 1
+          # 啟動 Docker 應用程式。'--background' 和 '--hide' 確保它在背景運行
+          open --background -a Docker
+          
+          # 等待 Docker 服務完全就緒
+          echo "Waiting for Docker daemon to start..."
+          while ! docker system info > /dev/null 2>&1; do
+            sleep 2
           done
-          echo "Docker is ready!"
+          echo "Docker daemon is ready!"
 
-      # 步驟 6: 執行程式碼風格檢查 (Linter)
+      # 步驟 5: 執行程式碼風格檢查 (Linter)
       # -- -D warnings 會將所有警告視為錯誤，強制維持高程式碼品質
       - name: Run linter (Clippy)
         run: cargo clippy -- -D warnings
 
-      # 步驟 7: 執行測試
+      # 步驟 6: 執行測試
       - name: Run tests
         run: cargo test --verbose
 
-      # 步驟 8: 編譯 Release 版本的執行檔
+      # 步驟 7: 編譯 Release 版本的執行檔
       - name: Build release binary
         run: cargo build --release --verbose
 
-      # 步驟 9: 打包執行檔 (僅在推送標籤時執行)
-      # 'if' 條件句確保這一步和下一步只在觸發事件是標���時才會運行
+      # 步驟 8: 打包執行檔 (僅在推送標籤時執行)
+      # 'if' 條件句確保這一步和下一步只在觸發事件是標籤時才會運行
       - name: Package release assets
         if: startsWith(github.ref, 'refs/tags/')
         run: zip -j mac-setup-cli.zip target/release/mac-setup-cli
 
-      # 步驟 10: 建立 GitHub Release (僅在推送標籤時執行)
+      # 步驟 9: 建立 GitHub Release (僅在推送標籤時執行)
       # 使用社群廣受好評的 action 來自動建立 Release
       - name: Create GitHub Release
         if: startsWith(github.ref, 'refs/tags/')
@@ -94,6 +92,6 @@ jobs:
           # 將打包好的 zip 檔案上傳
           files: mac-setup-cli.zip
           # GITHUB_TOKEN 是由 GitHub Actions 自動提供的，不需要手動設定
-          # 它有權限可以代表您在儲存庫中建立 Release
+          # 它有權限可以代表��在儲存庫中建立 Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
