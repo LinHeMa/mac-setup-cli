@@ -4,7 +4,7 @@
 2. 在您的「下載」檔案夾中，找到並解壓縮`mac-setup-cli.zip`。您會得到一個名為 `mac-setup-cli` 的執行檔。
 3. 為了讓您可以在任何地方執行此工具，我們建議將它移動到`/usr/local/bin`。請打開您的終端機 (Terminal) 並執行以下指令：
 ```bash
-    sudo mv ~/Downloads/mac-setup-cli /usr/local/bin/mac-setup-cli
+chmod +x ~/Downloads/mac-setup-cli
 ```
 4. 安裝完畢之後，可以使用 `mac-setup-cli`
 
